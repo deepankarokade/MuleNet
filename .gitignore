@@ -1,0 +1,24 @@
+# Python
+backend/venv/
+backend/.venv/
+**/__pycache__/
+*.py[cod]
+*$py.class
+**/.pytest_cache/
+
+# Node.js
+frontend/mulenet/node_modules/
+frontend/mulenet/.next/
+frontend/mulenet/.env.local
+frontend/mulenet/.env.production.local
+frontend/mulenet/.env.development.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
