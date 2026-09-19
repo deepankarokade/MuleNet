@@ -72,10 +72,10 @@ export default function CaseFileModal({
       },
       member_entities: ring?.member_accounts || (account ? [account.account_id] : []),
       evidence_exhibits: [
-        "95%+ pass-through velocity with minimal capital retention",
-        "Funds forwarded across multi-hop layered intermediaries within 18 hours",
-        "Low overall transaction count consistent with shell conduit behavior",
-        "Structured fund aggregation routing toward cashout settlement vault"
+        `${classification} pattern confirmed across ${accountsCount} coordinated entity account(s)`,
+        `Total cumulative volume of ${isINR ? "₹" : "$"}${Number(totalVolume).toLocaleString()} routed through network topology`,
+        account ? `Entity flagged with suspicion score ${riskScore}/100 (Role: ${account.role || "MULE"})` : `Primary coordination hub: ${ring?.orchestrator || ring?.member_accounts?.[0] || "Identified Orchestrator"}`,
+        "Rapid cross-entity fund dispersion consistent with AML typologies"
       ],
       sar_recommendation: {
         filing_required: true,

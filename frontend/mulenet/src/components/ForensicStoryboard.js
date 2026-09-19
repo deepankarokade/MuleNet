@@ -24,6 +24,9 @@ export default function ForensicStoryboard({
   const rings = report.fraud_rings;
   const activeRing = rings.find((r) => r.ring_id === activeRingId);
 
+  const isINR = report?.summary?.currency === "INR" || 
+    transactions.some((t) => t.currency === "INR" || String(t.sender_account).includes("INR"));
+
   // Helper to generate chronological narrative & flow for each ring
   const getRingStory = (ring) => {
     if (!ring) return null;
@@ -51,39 +54,38 @@ export default function ForensicStoryboard({
         }));
       }
     } else if (pattern.includes("Shell") || pattern.includes("Chain")) {
+      const members = ring.member_accounts || [];
+      const origin = ring.orchestrator || members[0] || "Origin Entity";
+      const dest = members.length > 1 ? members[members.length - 1] : "Settlement Account";
+      const intermediaryCount = Math.max(0, members.length - 2);
+      const hopAmt = members.length > 1 ? Math.round(ring.total_funds_routed / (members.length - 1)) : ring.total_funds_routed;
+
       schemeType = "Layered Multi-Hop Shell Pipeline";
-      explanation = `Capital from ${ring.orchestrator || "DIRTY_ORIGIN_99"} was funneled through 3 intermediary pass-through accounts before settling at CLEAN_VAULT_FINAL within 18 hours (>99.5% pass-through velocity).`;
+      explanation = `Capital from ${origin} was funneled through ${intermediaryCount} intermediary conduit account(s) before settling at ${dest} (${ring.total_funds_routed > 0 ? (isINR ? '₹' : '$') + Number(ring.total_funds_routed).toLocaleString() : 'high velocity'}).`;
       recommendation = `RECOMMENDED ACTION: Trace ultimate beneficial ownership (UBO) of intermediary entities; request inter-institution freeze.`;
 
-      if (ring.member_accounts && ring.member_accounts.length > 0) {
-        const ordered = [
-          "DIRTY_ORIGIN_99",
-          "SHELL_HOLDING_LTD_1",
-          "SHELL_OFFSHORE_CORP_2",
-          "SHELL_SERVICES_INC_3",
-          "CLEAN_VAULT_FINAL"
-        ].filter((id) => ring.member_accounts.includes(id));
-
-        const list = ordered.length >= 3 ? ordered : ring.member_accounts;
-        flowSteps = list.slice(0, list.length - 1).map((acc, idx) => ({
+      if (members.length > 1) {
+        flowSteps = members.slice(0, members.length - 1).map((acc, idx) => ({
           account: acc,
-          nextAccount: list[idx + 1],
-          amount: 118000,
+          nextAccount: members[idx + 1],
+          amount: hopAmt,
           isOrigin: idx === 0
         }));
       }
     } else if (pattern.includes("Smurf") || pattern.includes("Fan")) {
+      const hub = ring.orchestrator || (ring.member_accounts && ring.member_accounts[0]) || "Aggregator Hub";
+      const mules = (ring.member_accounts || []).filter((a) => a !== hub);
+      const muleCount = mules.length || 1;
+      const smurfAmt = Math.round((ring.total_funds_routed || 0) / Math.max(1, muleCount));
+
       schemeType = "Structuring & Smurfing Aggregator Hub";
-      explanation = `14 feeder accounts structured deposits between $9,200 and $9,800 (below $10k mandatory CTR limits) into aggregator hub ${ring.orchestrator || "SMURF_AGGREGATOR_01"} within a 9.75-hour window.`;
-      recommendation = `RECOMMENDED ACTION: File FinCEN Form 111 (SAR-DI) for structured smurfing; flag aggregator account for immediate SAR.`;
+      explanation = `${muleCount} feeder entity accounts coordinated structured transfers totaling ${isINR ? '₹' : '$'}${Number(ring.total_funds_routed || 0).toLocaleString()} into central aggregator hub ${hub}.`;
+      recommendation = `RECOMMENDED ACTION: File Regulatory SAR for structured smurfing; flag aggregator account for immediate review.`;
 
-      const hub = ring.member_accounts.find((a) => a.includes("AGGREGATOR")) || ring.orchestrator;
-      const mules = ring.member_accounts.filter((a) => a !== hub);
-
-      flowSteps = mules.slice(0, 5).map((mule) => ({
+      flowSteps = mules.slice(0, 8).map((mule) => ({
         account: mule,
         nextAccount: hub,
-        amount: 9500,
+        amount: smurfAmt > 0 ? smurfAmt : 9500,
         isOrigin: false
       }));
     }

@@ -64,22 +64,50 @@ export default function RingInvestigation({
 
   // Build sequential flow hops for this ring
   const ringFlowData = useMemo(() => {
-    if (!activeRing) return { hops: [], accounts: [], elapsedStr: "11h 42m", evidence: [] };
+    if (!activeRing) return { hops: [], accounts: [], elapsedStr: "N/A", evidence: [] };
 
     const members = activeRing.member_accounts || [];
     const count = members.length;
-    const totalRouted = activeRing.total_funds_routed || 5920000;
+    const totalRouted = activeRing.total_funds_routed || 0;
     const pattern = activeRing.primary_pattern || "";
 
     // 1. Build hops
     const hops = [];
-    const avgHopAmt = Math.round(totalRouted / Math.max(1, count - 1));
+    const avgHopAmt = count > 1 ? Math.round(totalRouted / (count - 1)) : totalRouted;
+    let prevDate = null;
+    let firstDate = null;
+    let lastDate = null;
 
     for (let i = 0; i < members.length - 1; i++) {
       const fromAcc = members[i];
       const toAcc = members[i + 1];
-      const hopRetained = Math.round(avgHopAmt * 0.005); // 0.5% mule fee
-      const hopAmount = avgHopAmt - i * hopRetained;
+
+      // Find real matching transaction if available
+      const matchedTx = transactions.find(
+        (t) => (t.sender_account === fromAcc && t.receiver_account === toAcc)
+      ) || transactions.find(
+        (t) => (t.sender_account === toAcc && t.receiver_account === fromAcc)
+      );
+
+      const hopRetained = Math.round(avgHopAmt * 0.005);
+      const hopAmount = matchedTx ? Number(matchedTx.amount) : (avgHopAmt - i * hopRetained);
+      const hopTimestamp = matchedTx?.timestamp || new Date(Date.now() - (members.length - i) * 3600000 * 3).toISOString();
+
+      const currentDate = new Date(hopTimestamp);
+      let timeDeltaHours = 0;
+      let timeDeltaDisplay = i === 0 ? "Initial Hop" : "+0 hrs";
+
+      if (!isNaN(currentDate.getTime())) {
+        if (!firstDate) firstDate = currentDate;
+        lastDate = currentDate;
+
+        if (prevDate) {
+          const diffMs = Math.abs(currentDate.getTime() - prevDate.getTime());
+          timeDeltaHours = Number((diffMs / 3600000).toFixed(1));
+          timeDeltaDisplay = timeDeltaHours > 0 ? `+${timeDeltaHours} hrs` : "+0 hrs";
+        }
+        prevDate = currentDate;
+      }
 
       hops.push({
         hop_number: i + 1,
@@ -87,12 +115,25 @@ export default function RingInvestigation({
         to_account: toAcc,
         amount: hopAmount,
         currency: isINR ? "INR" : "USD",
-        timestamp: `2026-09-01T${String(10 + i * 3).padStart(2, "0")}:00:00Z`,
-        time_delta_hours: i === 0 ? 0 : 3.5,
-        time_delta_display: i === 0 ? "Initial Hop" : "+3.5 hrs",
+        timestamp: hopTimestamp,
+        time_delta_hours: timeDeltaHours,
+        time_delta_display: timeDeltaDisplay,
         retained_amount: hopRetained,
         retained_percent: 0.5
       });
+    }
+
+    // Dynamic elapsed time
+    let elapsedStr = "Immediate";
+    if (firstDate && lastDate) {
+      const totalElapsedMs = Math.abs(lastDate.getTime() - firstDate.getTime());
+      const hours = Math.floor(totalElapsedMs / 3600000);
+      const mins = Math.floor((totalElapsedMs % 3600000) / 60000);
+      if (hours > 0 || mins > 0) {
+        elapsedStr = `${hours}h ${mins}m`;
+      }
+    } else if (hops.length > 0) {
+      elapsedStr = `${hops.length * 3}h 15m`;
     }
 
     // 2. Build Evidence Checklist
