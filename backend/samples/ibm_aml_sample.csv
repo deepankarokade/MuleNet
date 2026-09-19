@@ -1,0 +1,26 @@
+Timestamp, From Bank, Account, To Bank, Account.1, Amount Received, Receiving Currency, Amount Paid, Payment Currency, Payment Format, Is Laundering
+2022/09/01 01:10, 010, 8000, 012, 8001, 15000.00, US Dollar, 15000.00, US Dollar, Wire, 1
+2022/09/01 02:20, 012, 8001, 015, 8002, 14900.00, US Dollar, 14900.00, US Dollar, Wire, 1
+2022/09/01 03:40, 015, 8002, 010, 8000, 14800.00, US Dollar, 14800.00, US Dollar, Wire, 1
+2022/09/01 04:00, 020, 9001, 030, 9999, 9200.00, US Dollar, 9200.00, US Dollar, Cheque, 1
+2022/09/01 04:15, 020, 9002, 030, 9999, 9150.00, US Dollar, 9150.00, US Dollar, Cheque, 1
+2022/09/01 04:30, 021, 9003, 030, 9999, 9300.00, US Dollar, 9300.00, US Dollar, Cheque, 1
+2022/09/01 04:45, 022, 9004, 030, 9999, 9400.00, US Dollar, 9400.00, US Dollar, Cheque, 1
+2022/09/01 05:00, 020, 9005, 030, 9999, 9250.00, US Dollar, 9250.00, US Dollar, Cheque, 1
+2022/09/01 05:15, 023, 9006, 030, 9999, 9100.00, US Dollar, 9100.00, US Dollar, Cheque, 1
+2022/09/01 05:30, 024, 9007, 030, 9999, 9350.00, US Dollar, 9350.00, US Dollar, Cheque, 1
+2022/09/01 05:45, 020, 9008, 030, 9999, 9450.00, US Dollar, 9450.00, US Dollar, Cheque, 1
+2022/09/01 06:00, 025, 9009, 030, 9999, 9200.00, US Dollar, 9200.00, US Dollar, Cheque, 1
+2022/09/01 06:15, 020, 9010, 030, 9999, 9300.00, US Dollar, 9300.00, US Dollar, Cheque, 1
+2022/09/01 06:30, 026, 9011, 030, 9999, 9150.00, US Dollar, 9150.00, US Dollar, Cheque, 1
+2022/09/01 07:00, 030, 9999, 099, 7777, 102000.00, US Dollar, 102000.00, US Dollar, Wire, 1
+2022/09/01 08:00, 001, 1001, 002, 2001, 45.50, US Dollar, 45.50, US Dollar, Credit Card, 0
+2022/09/01 08:30, 001, 1002, 002, 2001, 120.00, US Dollar, 120.00, US Dollar, Credit Card, 0
+2022/09/01 09:00, 001, 1003, 003, 2002, 85.20, US Dollar, 85.20, US Dollar, Credit Card, 0
+2022/09/01 09:30, 002, 1004, 002, 2001, 15.00, US Dollar, 15.00, US Dollar, Credit Card, 0
+2022/09/01 10:00, 003, 1005, 004, 2003, 230.40, US Dollar, 230.40, US Dollar, ACH, 0
+2022/09/01 10:30, 001, 1006, 002, 2001, 62.00, US Dollar, 62.00, US Dollar, Credit Card, 0
+2022/09/01 11:00, 004, 1007, 005, 2004, 500.00, US Dollar, 500.00, US Dollar, Wire, 0
+2022/09/01 11:30, 001, 1008, 002, 2001, 18.90, US Dollar, 18.90, US Dollar, Credit Card, 0
+2022/09/01 12:00, 002, 1009, 003, 2002, 44.00, US Dollar, 44.00, US Dollar, Credit Card, 0
+2022/09/01 12:30, 003, 1010, 004, 2003, 110.00, US Dollar, 110.00, US Dollar, ACH, 0
