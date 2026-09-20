@@ -78,7 +78,7 @@ MuleNet is an institutional-grade anti-money laundering (AML) intelligence syste
   - "Why Flagged?" mathematical breakdown and chronological transaction timeline.
 - **Regulatory Case File Export**:
   - Generates downloadable FinCEN / FIU-IND compliant Suspicious Activity Report (SAR) JSON exhibits.
-- **Global Search (`Ctrl + K`)**:
+- **Global Search**:
   - Instant hotkey search across accounts, rings, transaction IDs, and amounts.
 - **Fail-Safe Schema Validation**:
   - Automatic detection and friendly error reporting for non-financial datasets (e.g., hospital, student, or demographic files).
