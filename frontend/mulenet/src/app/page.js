@@ -280,7 +280,7 @@ export default function Home() {
                     className="flex items-center gap-2 px-3.5 py-1.5 bg-[#F8FAFC] hover:bg-[#F1F5F9] text-[#475569] hover:text-[#0F172A] font-medium text-xs rounded-[4px] border border-[#E2E8F0] transition cursor-pointer"
                   >
                     <Download size={13} className="text-[#64748B]" />
-                    <span>Export JSON</span>
+                    <span>Export Evidence JSON</span>
                   </button>
                 )}
               </div>
@@ -367,87 +367,87 @@ export default function Home() {
             </section>
           )}
 
-        {/* Main Work Area Views (Navigated via Hamburger Sidebar) */}
-        {report && (
-          <section className="space-y-4">
-            {/* Tab 0: Network Overview */}
-            {activeTab === "overview" && (
-              <NetworkOverview
-                report={report}
-                onNavigateTab={(tab) => setActiveTab(tab)}
-                onSelectRing={handleSelectRing}
-                onSelectAccount={handleInspectAccount}
-                transactions={parsedTransactions}
-              />
-            )}
+          {/* Main Work Area Views (Navigated via Hamburger Sidebar) */}
+          {report && (
+            <section className="space-y-4">
+              {/* Tab 0: Network Overview */}
+              {activeTab === "overview" && (
+                <NetworkOverview
+                  report={report}
+                  onNavigateTab={(tab) => setActiveTab(tab)}
+                  onSelectRing={handleSelectRing}
+                  onSelectAccount={handleInspectAccount}
+                  transactions={parsedTransactions}
+                />
+              )}
 
-            {/* Tab 1: Investigation Room */}
-            {activeTab === "investigate" && (
-              <InvestigationRoom
-                report={report}
-                selectedAccountId={selectedAccountId}
-                onSelectAccount={(accId) => setSelectedAccountId(accId)}
-                transactions={parsedTransactions}
-              />
-            )}
+              {/* Tab 1: Investigation Room */}
+              {activeTab === "investigate" && (
+                <InvestigationRoom
+                  report={report}
+                  selectedAccountId={selectedAccountId}
+                  onSelectAccount={(accId) => setSelectedAccountId(accId)}
+                  transactions={parsedTransactions}
+                />
+              )}
 
-            {/* Tab 2: Dedicated Ring Investigation View */}
-            {activeTab === "ring_investigation" && (
-              <RingInvestigation
-                report={report}
-                activeRingId={activeRingFilter}
-                onSelectRing={handleSelectRing}
-                onSelectAccount={handleInspectAccount}
-                onNavigateTab={(tab) => setActiveTab(tab)}
-                onOpenCaseFile={(r) => {
-                  setActiveCaseRing(r);
-                  setIsCaseModalOpen(true);
-                }}
-                transactions={parsedTransactions}
-              />
-            )}
-
-            {/* Tab 3: Directed Cytoscape Graph & Forensic Storyboard */}
-            {activeTab === "graph" && (
-              <div className="space-y-4">
-                <ForensicStoryboard
+              {/* Tab 2: Dedicated Ring Investigation View */}
+              {activeTab === "ring_investigation" && (
+                <RingInvestigation
                   report={report}
                   activeRingId={activeRingFilter}
                   onSelectRing={handleSelectRing}
                   onSelectAccount={handleInspectAccount}
-                  hideCleanNodes={hideCleanNodes}
-                  onToggleHideClean={() => setHideCleanNodes((prev) => !prev)}
+                  onNavigateTab={(tab) => setActiveTab(tab)}
+                  onOpenCaseFile={(r) => {
+                    setActiveCaseRing(r);
+                    setIsCaseModalOpen(true);
+                  }}
                   transactions={parsedTransactions}
                 />
+              )}
 
-                <div className="h-[600px] w-full">
-                  <CytoscapeGraph
-                    graphData={report.graph_data}
-                    fraudRings={report.fraud_rings}
-                    onSelectAccount={setSelectedAccountId}
-                    onInvestigateAccount={handleInvestigateAccount}
-                    selectedAccountId={selectedAccountId}
-                    activeRingFilter={activeRingFilter}
+              {/* Tab 3: Directed Cytoscape Graph & Forensic Storyboard */}
+              {activeTab === "graph" && (
+                <div className="space-y-4">
+                  <ForensicStoryboard
+                    report={report}
+                    activeRingId={activeRingFilter}
+                    onSelectRing={handleSelectRing}
+                    onSelectAccount={handleInspectAccount}
                     hideCleanNodes={hideCleanNodes}
                     onToggleHideClean={() => setHideCleanNodes((prev) => !prev)}
+                    transactions={parsedTransactions}
                   />
-                </div>
-              </div>
-            )}
 
-            {/* Tab 4: Suspicious Accounts Table */}
-            {activeTab === "table" && (
-              <SuspiciousTable
-                accounts={report.suspicious_accounts}
-                onInspectAccount={handleInspectAccount}
-                onInvestigateAccount={handleInvestigateAccount}
-                selectedAccountId={selectedAccountId}
-              />
-            )}
-          </section>
-        )}
-      </main>
-    </div>
+                  <div className="h-[600px] w-full">
+                    <CytoscapeGraph
+                      graphData={report.graph_data}
+                      fraudRings={report.fraud_rings}
+                      onSelectAccount={setSelectedAccountId}
+                      onInvestigateAccount={handleInvestigateAccount}
+                      selectedAccountId={selectedAccountId}
+                      activeRingFilter={activeRingFilter}
+                      hideCleanNodes={hideCleanNodes}
+                      onToggleHideClean={() => setHideCleanNodes((prev) => !prev)}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 4: Suspicious Accounts Table */}
+              {activeTab === "table" && (
+                <SuspiciousTable
+                  accounts={report.suspicious_accounts}
+                  onInspectAccount={handleInspectAccount}
+                  onInvestigateAccount={handleInvestigateAccount}
+                  selectedAccountId={selectedAccountId}
+                />
+              )}
+            </section>
+          )}
+        </main>
+      </div>
 
       {/* Global Omnibar Search (Ctrl+K) */}
       <GlobalSearch

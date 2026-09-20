@@ -274,7 +274,7 @@ export default function CaseFileModal({
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] text-xs font-semibold bg-[#2563EB] hover:bg-[#1D4ED8] text-white transition cursor-pointer shadow-xs"
             >
               <Download size={13} />
-              <span>Export JSON</span>
+              <span>Export Evidence JSON</span>
             </button>
           </div>
         </div>

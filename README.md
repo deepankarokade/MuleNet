@@ -9,8 +9,7 @@
 [![Next.js](https://img.shields.io/badge/Frontend-Next.js%2016%20%7C%20React%2019-000000?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org)
 [![Cytoscape.js](https://img.shields.io/badge/Graph-Cytoscape.js%20Directed%20Visualizer-EA580C?style=flat-square)](https://js.cytoscape.org)
 [![Tests](https://img.shields.io/badge/Tests-29%2F29%20Passing-10B981?style=flat-square&logo=pytest&logoColor=white)](https://pytest.org)
-[![Deployment](https://img.shields.io/badge/Deploy-Railway%20%7C%20Vercel-6366F1?style=flat-square&logo=railway&logoColor=white)](https://railway.com)
-[![License](https://img.shields.io/badge/License-MIT-gray?style=flat-square)](LICENSE)
+[![Deployment](https://img.shields.io/badge/Deploy-Render%20%7C%20Vercel-6366F1?style=flat-square&logo=render&logoColor=white)](https://render.com)
 
 <p align="center">
   <b>High-throughput graph forensics engine and Bloomberg/Palantir-inspired light workstation for detecting complex money muling networks, smurfing structures, and circular fund routing.</b>
@@ -227,9 +226,10 @@ tests/test_shell_detector.py ..                  [ 96%]
 tests/test_smurfing_detector.py .                [100%]
 
 ======================== 29 passed in 3.88s ========================
+RESULTS MAY VARY SINCE THESE ARE THE BENCHMARKS OF LOCAL OUTPUT AND NOT CLOUD OUTPUT.
 ```
 
 ---
 
 ## 👥 Authors & Team
-Built with ❤️ by **Devengers** for high-precision financial crime intelligence.
+Built with ❤️ by **Deepankar Rokade** for high-precision financial crime intelligence.
