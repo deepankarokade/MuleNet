@@ -86,9 +86,6 @@ export default function Header({
             <Search size={13} className="text-[#94A3B8] group-hover:text-[#2563EB]" />
             <span className="truncate">Search account, ring, amount...</span>
           </div>
-          <kbd className="text-[10px] font-mono bg-white text-[#64748B] px-1.5 py-0.5 rounded-[3px] border border-[#E2E8F0] shadow-2xs">
-            Ctrl K
-          </kbd>
         </button>
       </div>
 
@@ -113,9 +110,8 @@ export default function Header({
           }
         >
           <span
-            className={`w-1.5 h-1.5 rounded-full ${
-              backendOnline ? "bg-emerald-500" : "bg-amber-500"
-            }`}
+            className={`w-1.5 h-1.5 rounded-full ${backendOnline ? "bg-emerald-500" : "bg-amber-500"
+              }`}
           />
           <span className="text-[10px] font-medium tracking-wide uppercase">
             {backendOnline ? "Engine Online" : "Engine Local"}

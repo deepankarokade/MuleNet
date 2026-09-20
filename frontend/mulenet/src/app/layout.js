@@ -1,5 +1,7 @@
 import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import { ForensicsProvider } from "@/context/ForensicsContext";
+import WorkstationShell from "@/components/WorkstationShell";
 
 const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-ibm-plex-sans",
@@ -26,7 +28,11 @@ export default function RootLayout({ children }) {
       className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning className="min-h-full flex flex-col bg-[#F1F3F5] text-[#0F172A] font-sans">
-        {children}
+        <ForensicsProvider>
+          <WorkstationShell>
+            {children}
+          </WorkstationShell>
+        </ForensicsProvider>
       </body>
     </html>
   );

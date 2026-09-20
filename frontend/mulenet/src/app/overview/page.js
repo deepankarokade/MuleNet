@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import NetworkOverview from "@/components/NetworkOverview";
 import { useForensics } from "@/context/ForensicsContext";
 
-export default function Home() {
+export default function OverviewPage() {
   const router = useRouter();
   const {
     report,

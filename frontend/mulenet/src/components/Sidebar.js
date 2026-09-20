@@ -16,6 +16,8 @@ import {
   CheckCircle2
 } from "lucide-react";
 
+import Link from "next/link";
+
 export default function Sidebar({
   isOpen,
   onClose,
@@ -42,6 +44,7 @@ export default function Sidebar({
   const navItems = [
     {
       id: "overview",
+      href: "/overview",
       label: "Overview",
       badge: null,
       icon: TrendingUp,
@@ -49,6 +52,7 @@ export default function Sidebar({
     },
     {
       id: "investigate",
+      href: "/investigate",
       label: "Investigation",
       badge: selectedAccountId ? selectedAccountId : null,
       badgeType: "account",
@@ -57,6 +61,7 @@ export default function Sidebar({
     },
     {
       id: "ring_investigation",
+      href: "/networks",
       label: "Networks",
       badge: report?.fraud_rings?.length || 0,
       badgeType: "count",
@@ -65,6 +70,7 @@ export default function Sidebar({
     },
     {
       id: "graph",
+      href: "/graph",
       label: "Graph",
       badge: null,
       icon: Network,
@@ -72,6 +78,7 @@ export default function Sidebar({
     },
     {
       id: "table",
+      href: "/accounts",
       label: "Accounts",
       badge: report?.suspicious_accounts?.length || 0,
       badgeType: "count",
@@ -82,9 +89,8 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`${
-        isOpen ? "w-64" : "w-0 overflow-hidden border-r-0"
-      } shrink-0 bg-white border-r border-[#E2E8F0] flex flex-col font-sans sticky top-[57px] h-[calc(100vh-57px)] transition-all duration-200 ease-in-out select-none z-20 shadow-2xs`}
+      className={`${isOpen ? "w-64" : "w-0 overflow-hidden border-r-0"
+        } shrink-0 bg-white border-r border-[#E2E8F0] flex flex-col font-sans sticky top-[57px] h-[calc(100vh-57px)] transition-all duration-200 ease-in-out select-none z-20 shadow-2xs`}
       aria-label="Workstation Navigation"
     >
       {/* Sidebar Header */}
@@ -105,19 +111,18 @@ export default function Sidebar({
 
         <button
           onClick={onClose}
-          className="p-1 rounded-[4px] hover:bg-[#F1F5F9] text-[#64748B] hover:text-[#0F172A] border border-transparent hover:border-[#E2E8F0] transition cursor-pointer"
-          title="Collapse Sidebar"
+          className="p-1 text-[#64748B] hover:text-[#0F172A] rounded-[4px] hover:bg-[#F1F5F9] transition cursor-pointer"
+          title="Close Navigation Menu (Esc)"
         >
-          <X size={14} />
+          <X size={15} />
         </button>
       </div>
 
-      {/* Scrollable Navigation & Content Area */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-5 min-w-[256px]">
-        {/* Main Navigation Modules */}
+      {/* Main Navigation */}
+      <div className="p-3 flex-1 overflow-y-auto space-y-4 min-w-[256px]">
         <div>
           <div className="px-2 mb-2 text-[10px] font-mono uppercase tracking-wider text-[#64748B]">
-            Investigation Modules
+            Workstation Modules
           </div>
 
           <nav className="space-y-1">
@@ -126,14 +131,14 @@ export default function Sidebar({
               const isActive = activeTab === item.id;
 
               return (
-                <button
+                <Link
                   key={item.id}
-                  onClick={() => onSelectTab(item.id)}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-[4px] text-xs font-medium transition text-left cursor-pointer border ${
-                    isActive
+                  href={item.href}
+                  onClick={() => onSelectTab && onSelectTab(item.id)}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-[4px] text-xs font-medium transition text-left cursor-pointer border ${isActive
                       ? "bg-[#F1F5F9] text-[#0F172A] border-[#E2E8F0] border-l-2 border-l-[#2563EB] shadow-2xs"
                       : "border-transparent text-[#475569] hover:text-[#0F172A] hover:bg-[#F8FAFC]"
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <Icon
@@ -152,18 +157,17 @@ export default function Sidebar({
 
                   {item.badge !== null && item.badge !== undefined && (
                     <span
-                      className={`text-[10px] font-mono px-1.5 py-0.5 rounded-[3px] shrink-0 ml-2 ${
-                        item.badgeType === "account"
+                      className={`text-[10px] font-mono px-1.5 py-0.5 rounded-[3px] shrink-0 ml-2 ${item.badgeType === "account"
                           ? "bg-[#F1F5F9] text-[#0F172A] border border-[#E2E8F0] max-w-[80px] truncate"
                           : isActive
-                          ? "bg-white text-[#0F172A] border border-[#E2E8F0] shadow-2xs font-semibold"
-                          : "bg-[#F8FAFC] text-[#64748B] border border-[#E2E8F0]"
-                      }`}
+                            ? "bg-white text-[#0F172A] border border-[#E2E8F0] shadow-2xs font-semibold"
+                            : "bg-[#F8FAFC] text-[#64748B] border border-[#E2E8F0]"
+                        }`}
                     >
                       {item.badge}
                     </span>
                   )}
-                </button>
+                </Link>
               );
             })}
           </nav>
@@ -184,9 +188,6 @@ export default function Sidebar({
                 <Search size={13} className="text-[#94A3B8]" />
                 <span>Global Search</span>
               </div>
-              <kbd className="text-[9px] font-mono bg-[#F1F5F9] text-[#64748B] px-1.5 py-0.5 rounded border border-[#E2E8F0]">
-                Ctrl K
-              </kbd>
             </button>
 
             {report && (
