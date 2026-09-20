@@ -350,7 +350,7 @@ export function traceAccountDossier(accountId, report, transactions = []) {
     upstreamSummary = `Inflow originated from ${bestUp.source_node} traversing ${bestUp.total_hops} intermediate hop(s) before settling at subject account ${accountId}.`;
   }
 
-  const caseNarrative = `### FORENSIC DOSSIER & SAR INVESTIGATION SUMMARY
+  const caseNarrative = `### FORENSIC DOSSIER & INVESTIGATION SUMMARY
 **Subject Entity**: \`${accountId}\`
 **Classification**: Risk Level **${riskLevel}** (Score: **${score}/100** • Role: **${role}**)
 **Network Affiliation**: ${ringStr}
@@ -367,8 +367,8 @@ ${flagBulletList}
 - **Inflow Origin Analysis**: ${upstreamSummary}
 - **Outflow Disbursement Trail**: ${downstreamSummary}
 
-#### 4. Investigator Recommendation
-Subject account demonstrates significant indicators of synthetic turnover and structured movement. Recommended regulatory filing: Submit formal Suspicious Activity Report (SAR) under AML/CFT guidelines and place an administrative hold on remaining balances.`;
+#### 4. Suggested Investigative Actions
+Subject account exhibits characteristics consistent with structured movement and synthetic turnover. Suggested investigative actions: Review forensic indicators for potential Suspicious Activity Report (SAR) filing under institutional AML/CFT guidelines and evaluate provisional administrative review of balance flows.`;
 
   const scoreBreakdown = sAcc?.score_breakdown || {
     shell_score: sAcc?.role === "SHELL" || sAcc?.role === "SUSPICIOUS_INTERMEDIARY" ? 60 : 0,

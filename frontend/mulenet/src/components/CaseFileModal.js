@@ -78,11 +78,11 @@ export default function CaseFileModal({
         "Rapid cross-entity fund dispersion consistent with AML typologies"
       ],
       sar_recommendation: {
-        filing_required: true,
-        priority: "IMMEDIATE_URGENT",
-        recommended_actions: [
-          "Submit Suspicious Activity Report (SAR) with FinCEN / FIU",
-          "Issue immediate provisional debit-freeze orders on identified conduit accounts",
+        filing_recommended: true,
+        priority: "HIGH_PRIORITY",
+        suggested_actions: [
+          "Evaluate potential Suspicious Activity Report (SAR) filing under institutional AML guidelines",
+          "Consider provisional administrative review on identified conduit accounts",
           "Initiate inter-institutional KYC & Ultimate Beneficial Ownership (UBO) audit"
         ]
       }
@@ -103,29 +103,30 @@ export default function CaseFileModal({
 
   const handleCopyMarkdown = () => {
     const md = `
-# OFFICIAL FINANCIAL INVESTIGATION CASE FILE
+# FINANCIAL INVESTIGATION CASE FILE
 **CASE ID:** ${caseId}  
 **DATE:** ${new Date().toLocaleDateString()}  
-**STATUS:** FLAGGED FOR REGULATORY ENFORCEMENT  
+**STATUS:** FLAGGED FOR COMPLIANCE REVIEW  
+**FORMAT:** SAR-ready investigation report  
 
 ## 1. Executive Summary
 - **Primary Network:** ${ring?.ring_id || "N/A"}
 - **Target Account:** ${account?.account_id || "N/A"}
 - **Classification:** ${classification}
-- **Risk Score:** ${riskScore} / 100 (${riskLevel})
+- **Risk Assessment:** ${riskScore} / 100 (${riskLevel})
 - **Total Monitored Accounts:** ${accountsCount}
 - **Total Volume Routed:** ${formatAmount(totalVolume)}
 
 ## 2. Forensic Evidence Exhibits
-- 95%+ pass-through velocity with minimal capital retention
-- Funds forwarded across multi-hop layered intermediaries within 18 hours
-- Low overall transaction count consistent with shell conduit behavior
-- Coordinated routing toward final cashout settlement vault
+- 95%+ pass-through velocity with minimal operational balance retention
+- Funds forwarded across multi-hop layered intermediaries within rapid window
+- Transaction structure consistent with conduit/shell routing behavior
+- Directional routing toward downstream consolidation hub
 
-## 3. Regulatory Action & SAR Recommendation
-- **Filing:** Suspicious Activity Report (SAR) Required
-- **Urgency:** IMMEDIATE_URGENT
-- **Enforcement:** Issue debit-freeze on member entities and initiate inter-institutional UBO audit.
+## 3. Suggested Investigative Actions
+- **SAR Evaluation:** Review exhibits for potential Suspicious Activity Report (SAR) filing
+- **Priority:** HIGH_PRIORITY
+- **Internal Action:** Evaluate provisional administrative holds on conduit accounts and conduct UBO audit.
 `;
     navigator.clipboard.writeText(md.trim());
     setCopied(true);
@@ -136,31 +137,34 @@ export default function CaseFileModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4 overflow-y-auto">
-      <div className="bg-white border border-[#E2E8F0] rounded-[4px] w-full max-w-3xl font-mono shadow-2xl overflow-hidden my-auto text-[#0F172A]">
+      <div className="bg-white border border-[#DCE1E7] rounded-[4px] w-full max-w-3xl font-mono shadow-2xl overflow-hidden my-auto text-[#172033]">
         {/* Header Bar */}
-        <div className="bg-white border-b border-[#E2E8F0] p-4 flex items-center justify-between">
+        <div className="bg-white border-b border-[#DCE1E7] p-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="p-1.5 rounded-[4px] bg-[#F1F5F9] border border-[#E2E8F0] text-[#2563EB]">
+            <div className="p-1.5 rounded-[4px] bg-[#F1F5F9] border border-[#DCE1E7] text-[#2563EB]">
               <FileText size={16} />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-[#0F172A]">
+                <span className="text-sm font-semibold text-[#172033]">
                   CASE #{caseId}
                 </span>
-                <span className="text-[10px] bg-[#F1F5F9] text-[#0F172A] px-2 py-0.5 rounded-[4px] border border-[#E2E8F0] font-mono">
-                  SAR CASE FILE
+                <span className="text-[10px] bg-[#F1F5F9] text-[#172033] px-2 py-0.5 rounded-[4px] border border-[#DCE1E7] font-mono">
+                  INVESTIGATION REPORT
+                </span>
+                <span className="text-[10px] text-[#64748B] font-mono hidden sm:inline">
+                  SAR-ready report format
                 </span>
               </div>
               <div className="text-[11px] text-[#64748B]">
-                Financial Intelligence Unit // Forensic Investigation Dossier
+                Financial Intelligence // Forensic Evidence Dossier
               </div>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-[4px] hover:bg-[#F1F5F9] text-[#64748B] hover:text-[#0F172A] transition cursor-pointer"
+            className="p-1.5 rounded-[4px] hover:bg-[#F1F5F9] text-[#64748B] hover:text-[#172033] transition cursor-pointer"
           >
             <X size={16} />
           </button>
@@ -169,41 +173,41 @@ export default function CaseFileModal({
         {/* Modal Printable Content Body */}
         <div className="p-5 space-y-4 max-h-[75vh] overflow-y-auto print:max-h-none print:p-0">
           {/* Metadata Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 bg-[#F8FAFC] border border-[#E2E8F0] p-3 rounded-[4px] text-xs">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 bg-[#F8FAFC] border border-[#DCE1E7] p-3 rounded-[4px] text-xs">
             <div>
               <div className="text-[10px] text-[#64748B] uppercase">Primary Subject</div>
-              <div className="font-semibold text-[#0F172A] mt-0.5 truncate font-mono">
+              <div className="font-semibold text-[#172033] mt-0.5 truncate font-mono">
                 {ring?.ring_id || account?.account_id || "RING-003"}
               </div>
             </div>
             <div>
               <div className="text-[10px] text-[#64748B] uppercase">Risk Assessment</div>
-              <div className="font-semibold text-[#0F172A] mt-0.5 font-mono">
+              <div className="font-semibold text-[#172033] mt-0.5 font-mono">
                 {riskLevel} — {riskScore} / 100
               </div>
             </div>
             <div>
               <div className="text-[10px] text-[#64748B] uppercase">Accounts In Scope</div>
-              <div className="font-semibold text-[#0F172A] mt-0.5 font-mono">{accountsCount} Entities</div>
+              <div className="font-semibold text-[#172033] mt-0.5 font-mono">{accountsCount} Entities</div>
             </div>
             <div>
               <div className="text-[10px] text-[#64748B] uppercase">Transaction Volume</div>
-              <div className="font-semibold text-[#0F172A] mt-0.5 font-mono">
+              <div className="font-semibold text-[#172033] mt-0.5 font-mono">
                 {formatAmount(totalVolume)}
               </div>
             </div>
           </div>
 
           {/* Classification Banner */}
-          <div className="p-3 rounded-[4px] bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-between">
+          <div className="p-3 rounded-[4px] bg-[#F8FAFC] border border-[#DCE1E7] flex items-center justify-between">
             <div>
               <div className="text-[10px] text-[#64748B] uppercase">Forensic Classification</div>
-              <div className="text-sm font-semibold text-[#0F172A] mt-0.5">
+              <div className="text-sm font-semibold text-[#172033] mt-0.5">
                 {classification}
               </div>
             </div>
             <div className="text-right text-[11px] text-[#64748B]">
-              Jurisdiction: <span className="text-[#0F172A]">{isINR ? "FIU-IND (India)" : "FinCEN (US)"}</span>
+              Jurisdiction: <span className="text-[#172033]">{isINR ? "FIU-IND (India)" : "FinCEN (US)"}</span>
             </div>
           </div>
 
@@ -213,19 +217,19 @@ export default function CaseFileModal({
               Verified Forensic Evidence Exhibits:
             </span>
             <div className="space-y-1.5 text-xs text-[#334155]">
-              <div className="p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#E2E8F0] flex items-start gap-2">
+              <div className="p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#DCE1E7] flex items-start gap-2">
                 <span className="text-[#2563EB] font-bold">•</span>
                 <span>
                   <strong>Pass-Through Velocity:</strong> 95%+ of incoming capital is forwarded within an average of 4.5 hours with negligible operational balance retention.
                 </span>
               </div>
-              <div className="p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#E2E8F0] flex items-start gap-2">
+              <div className="p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#DCE1E7] flex items-start gap-2">
                 <span className="text-[#2563EB] font-bold">•</span>
                 <span>
                   <strong>Topology Structure:</strong> Coordinated {accountsCount}-hop layered chain structured to systematically obscure the origin of funds.
                 </span>
               </div>
-              <div className="p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#E2E8F0] flex items-start gap-2">
+              <div className="p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#DCE1E7] flex items-start gap-2">
                 <span className="text-[#2563EB] font-bold">•</span>
                 <span>
                   <strong>Behavioral Anomaly:</strong> Intermediary accounts exhibit zero payroll, vendor, or commercial utility disbursements, acting solely as transit shells.
@@ -238,16 +242,16 @@ export default function CaseFileModal({
           <div className="p-3.5 rounded-[4px] bg-amber-50/60 border border-amber-200 space-y-1.5 text-xs">
             <div className="flex items-center gap-1.5 text-amber-900 font-semibold uppercase text-[11px]">
               <ShieldAlert size={14} className="text-amber-600" />
-              <span>Recommended Compliance Enforcement Action</span>
+              <span>Suggested Investigative Actions</span>
             </div>
             <p className="text-amber-800 leading-relaxed text-[11px]">
-              File an official Suspicious Activity Report (SAR) with FinCEN / FIU-IND under Category <em>&quot;Coordinated Money-Muling & Layered Fund Routing&quot;</em>. Issue immediate debit-freeze orders on all active conduit accounts to preserve capital and prevent settlement into untraceable off-ramp vaults.
+              Evaluate evidence exhibits for potential Suspicious Activity Report (SAR) filing with FinCEN / FIU-IND under Category <em>&quot;Layered Fund Routing & Coordinated Movement&quot;</em>. Review identified conduit accounts for provisional internal compliance debit-hold in accordance with established operational guidelines.
             </p>
           </div>
         </div>
 
         {/* Modal Action Footer */}
-        <div className="bg-white border-t border-[#E2E8F0] p-3.5 flex items-center justify-between">
+        <div className="bg-white border-t border-[#DCE1E7] p-3.5 flex items-center justify-between">
           <div className="text-[11px] text-[#64748B]">
             Institutional Case Document • MuleNet Forensic Engine
           </div>
@@ -255,7 +259,7 @@ export default function CaseFileModal({
           <div className="flex items-center gap-2">
             <button
               onClick={handleCopyMarkdown}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] text-xs font-medium bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] transition cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] text-xs font-medium bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#DCE1E7] text-[#172033] transition cursor-pointer"
             >
               {copied ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} className="text-[#64748B]" />}
               <span>{copied ? "Copied" : "Copy Markdown"}</span>
@@ -263,7 +267,7 @@ export default function CaseFileModal({
 
             <button
               onClick={handlePrint}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] text-xs font-medium bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] transition cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] text-xs font-medium bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#DCE1E7] text-[#172033] transition cursor-pointer"
             >
               <Printer size={13} className="text-[#64748B]" />
               <span>Print / PDF</span>

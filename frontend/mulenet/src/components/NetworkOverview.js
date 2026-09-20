@@ -24,7 +24,19 @@ export default function NetworkOverview({
   onSelectAccount,
   transactions = []
 }) {
-  if (!report || !report.summary) return null;
+  if (!report || !report.summary) {
+    return (
+      <div className="bg-white border border-[#DCE1E7] rounded-[4px] p-10 text-center space-y-3 shadow-2xs">
+        <div className="w-10 h-10 rounded-[4px] bg-[#F8FAFC] border border-[#DCE1E7] flex items-center justify-center text-[#2563EB] mx-auto">
+          <TrendingUp className="w-5 h-5" />
+        </div>
+        <h3 className="text-sm font-semibold text-[#172033]">No Active Transaction Ledger</h3>
+        <p className="text-xs text-[#64748B] max-w-md mx-auto leading-relaxed">
+          Upload a financial transaction CSV or load the sample dataset above to initiate graph cycle detection, flow tracing, and network reconstruction.
+        </p>
+      </div>
+    );
+  }
 
   const summary = report.summary;
   const rings = report.fraud_rings || [];
@@ -160,74 +172,14 @@ export default function NetworkOverview({
         </div>
       </div>
 
-      {/* Flat Metric Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-        <div className="bg-white border border-[#E2E8F0] p-3 rounded-[4px] shadow-2xs">
-          <div className="text-[10px] text-[#64748B] uppercase tracking-wider mb-1 flex items-center justify-between">
-            <span>Accounts</span>
-            <Users size={12} className="text-[#94A3B8]" />
-          </div>
-          <div className="text-lg font-semibold font-mono text-[#0F172A]">
-            {Number(summary.total_accounts || 0).toLocaleString()}
-          </div>
-          <div className="text-[10px] text-[#64748B] mt-0.5">Monitored entities</div>
-        </div>
-
-        <div className="bg-white border border-[#E2E8F0] p-3 rounded-[4px] shadow-2xs">
-          <div className="text-[10px] text-[#64748B] uppercase tracking-wider mb-1 flex items-center justify-between">
-            <span>Transactions</span>
-            <TrendingUp size={12} className="text-[#94A3B8]" />
-          </div>
-          <div className="text-lg font-semibold font-mono text-[#0F172A]">
-            {Number(summary.total_transactions || 0).toLocaleString()}
-          </div>
-          <div className="text-[10px] text-[#64748B] mt-0.5">Audited records</div>
-        </div>
-
-        <div className="bg-white border border-[#E2E8F0] p-3 rounded-[4px] shadow-2xs">
-          <div className="text-[10px] text-[#64748B] uppercase tracking-wider mb-1 flex items-center justify-between">
-            <span>Flagged Accounts</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-          </div>
-          <div className="text-lg font-semibold font-mono text-red-600">
-            {summary.total_suspicious_accounts || 0}
-          </div>
-          <div className="text-[10px] text-[#64748B] mt-0.5">High suspicion score</div>
-        </div>
-
-        <div className="bg-white border border-[#E2E8F0] p-3 rounded-[4px] shadow-2xs">
-          <div className="text-[10px] text-[#64748B] uppercase tracking-wider mb-1 flex items-center justify-between">
-            <span>Mule Networks</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-          </div>
-          <div className="text-lg font-semibold font-mono text-amber-700">
-            {summary.total_fraud_rings || 0}
-          </div>
-          <div className="text-[10px] text-[#64748B] mt-0.5">Detected clusters</div>
-        </div>
-
-        <div className="bg-white border border-[#E2E8F0] p-3 rounded-[4px] col-span-2 sm:col-span-1 shadow-2xs">
-          <div className="text-[10px] text-[#64748B] uppercase tracking-wider mb-1 flex items-center justify-between">
-            <span>Volume Analyzed</span>
-            <span className="text-[#64748B] font-mono">{curr}</span>
-          </div>
-          <div className="text-lg font-semibold font-mono text-[#0F172A] truncate">
-            {formatCompactVolume(totalVolumeAnalyzed)}
-          </div>
-          <div className="text-[10px] text-[#64748B] mt-0.5 truncate">
-            Suspicious: {formatCompactVolume(summary.total_suspicious_volume)}
-          </div>
-        </div>
-      </div>
-
       {/* Middle Row: Active Investigations (2/3) + Risk Distribution (1/3) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Active Investigations (2/3) */}
-        <div className="lg:col-span-2 bg-white border border-[#E2E8F0] rounded-[4px] p-4 space-y-3 shadow-2xs">
-          <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-2.5">
+        <div className="lg:col-span-2 bg-white border border-[#DCE1E7] rounded-[4px] p-4 space-y-3 shadow-2xs">
+          <div className="flex items-center justify-between border-b border-[#DCE1E7] pb-2.5">
             <div>
               <div className="text-[10px] font-mono text-[#64748B] uppercase tracking-wider">Priority Triage</div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#0F172A]">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#172033]">
                 Active Network Investigations
               </h3>
             </div>
@@ -251,27 +203,27 @@ export default function NetworkOverview({
                     onSelectRing?.(ring.ring_id);
                     onNavigateTab("ring_investigation");
                   }}
-                  className="p-3 rounded-[4px] bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#CBD5E1] hover:bg-[#F1F5F9] transition cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
+                  className="p-3 rounded-[4px] bg-[#F8FAFC] border border-[#DCE1E7] hover:border-[#CBD5E1] hover:bg-[#F1F5F9] transition cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono font-semibold text-[#0F172A] group-hover:underline">
+                      <span className="text-xs font-mono font-semibold text-[#172033] group-hover:underline">
                         {ring.ring_id}
                       </span>
                       <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[3px] bg-red-50 border border-red-200 text-red-700 font-semibold">
                         RISK {ring.risk_score}
                       </span>
-                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[3px] bg-white border border-[#E2E8F0] text-[#475569]">
+                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[3px] bg-white border border-[#DCE1E7] text-[#475569]">
                         {ring.member_count} ACCOUNTS
                       </span>
                     </div>
                     <div className="text-[11px] text-[#475569]">
-                      {ring.primary_pattern || "Layered Shell Pipeline"} • Coordinated money muling conduit
+                      {ring.primary_pattern || "Layered Shell Pipeline"} • Pattern consistent with coordinated money movement
                     </div>
                   </div>
 
-                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 border-[#E2E8F0] pt-2 sm:pt-0">
-                    <div className="text-xs font-mono font-semibold text-[#0F172A]">
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 border-[#DCE1E7] pt-2 sm:pt-0">
+                    <div className="text-xs font-mono font-semibold text-[#172033]">
                       {formatCompactVolume(ring.total_funds_routed)}
                     </div>
                     <span className="text-[10px] text-[#2563EB] group-hover:text-[#1D4ED8] inline-flex items-center gap-1 font-medium">
@@ -285,10 +237,10 @@ export default function NetworkOverview({
         </div>
 
         {/* Risk Distribution (1/3) */}
-        <div className="bg-white border border-[#E2E8F0] rounded-[4px] p-4 space-y-3 flex flex-col justify-between shadow-2xs">
+        <div className="bg-white border border-[#DCE1E7] rounded-[4px] p-4 space-y-3 flex flex-col justify-between shadow-2xs">
           <div>
             <div className="text-[10px] font-mono text-[#64748B] uppercase tracking-wider">Entity Verification</div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-[#0F172A] border-b border-[#E2E8F0] pb-2.5">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-[#172033] border-b border-[#DCE1E7] pb-2.5">
               Risk Distribution
             </h3>
 
@@ -311,13 +263,13 @@ export default function NetworkOverview({
                   <span className="text-[#475569]">Normal Accounts</span>
                 </div>
                 <div className="text-right font-mono">
-                  <span className="text-[#0F172A] font-semibold">{normalCount.toLocaleString()}</span>
+                  <span className="text-[#172033] font-semibold">{normalCount.toLocaleString()}</span>
                   <span className="text-[#64748B] text-[10px] ml-1">({normalPctDisplay}%)</span>
                 </div>
               </div>
 
               {/* Progress Bar with true proportion */}
-              <div className="h-2 w-full bg-[#E2E8F0] rounded-[2px] overflow-hidden flex border border-[#CBD5E1]">
+              <div className="h-2 w-full bg-[#DCE1E7] rounded-[2px] overflow-hidden flex border border-[#CBD5E1]">
                 <div
                   style={{ width: `${Math.max(1, Math.min(99, 100 - flaggedRatio))}%` }}
                   className="bg-emerald-600"
@@ -330,15 +282,15 @@ export default function NetworkOverview({
                 />
               </div>
 
-              <div className="p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#E2E8F0] text-[11px] text-[#64748B] leading-relaxed">
-                Denominator: <span className="font-mono text-[#0F172A] font-medium">{totalAccounts.toLocaleString()} total monitored accounts</span>. Accounts exceeding behavioral suspicion thresholds are isolated for investigation.
+              <div className="p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#DCE1E7] text-[11px] text-[#64748B] leading-relaxed">
+                Denominator: <span className="font-mono text-[#172033] font-medium">{totalAccounts.toLocaleString()} total monitored accounts</span>. Accounts exceeding behavioral suspicion thresholds are isolated for investigation.
               </div>
             </div>
           </div>
 
-          <div className="pt-2 border-t border-[#E2E8F0] flex items-center justify-between text-[11px]">
+          <div className="pt-2 border-t border-[#DCE1E7] flex items-center justify-between text-[11px]">
             <span className="text-[#64748B]">Detection Engine</span>
-            <span className="font-mono text-[#0F172A] font-medium">{report.report_metadata?.version || "Python Graph Engine"}</span>
+            <span className="font-mono text-[#172033] font-medium">{report.report_metadata?.version || "Python Graph Engine"}</span>
           </div>
         </div>
       </div>
@@ -346,52 +298,52 @@ export default function NetworkOverview({
       {/* Lower Row: Network Topology & Patterns */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Typology Patterns Breakdown */}
-        <div className="bg-white border border-[#E2E8F0] rounded-[4px] p-4 space-y-3 shadow-2xs">
-          <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-2.5">
+        <div className="bg-white border border-[#DCE1E7] rounded-[4px] p-4 space-y-3 shadow-2xs">
+          <div className="flex items-center justify-between border-b border-[#DCE1E7] pb-2.5">
             <div>
               <div className="text-[10px] font-mono text-[#64748B] uppercase tracking-wider">Classification</div>
-              <h3 className="text-xs uppercase tracking-wider font-semibold text-[#0F172A]">
+              <h3 className="text-xs uppercase tracking-wider font-semibold text-[#172033]">
                 Network Typologies
               </h3>
             </div>
           </div>
 
           <div className="space-y-2">
-            <div className="flex items-center justify-between p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#E2E8F0]">
+            <div className="flex items-center justify-between p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#DCE1E7]">
               <div className="flex items-center gap-2">
                 <Repeat size={13} className="text-[#64748B]" />
                 <div>
-                  <div className="text-xs font-medium text-[#0F172A]">Circular Routing</div>
+                  <div className="text-xs font-medium text-[#172033]">Circular Routing</div>
                   <div className="text-[10px] text-[#64748B]">Closed cycles of length 3-5</div>
                 </div>
               </div>
-              <span className="text-xs font-mono font-medium text-[#0F172A] px-2 py-0.5 rounded-[3px] bg-white border border-[#E2E8F0]">
+              <span className="text-xs font-mono font-medium text-[#172033] px-2 py-0.5 rounded-[3px] bg-white border border-[#DCE1E7]">
                 {typologies.cycles}
               </span>
             </div>
 
-            <div className="flex items-center justify-between p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#E2E8F0]">
+            <div className="flex items-center justify-between p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#DCE1E7]">
               <div className="flex items-center gap-2">
                 <Share2 size={13} className="text-[#64748B]" />
                 <div>
-                  <div className="text-xs font-medium text-[#0F172A]">Smurfing Clusters</div>
+                  <div className="text-xs font-medium text-[#172033]">Smurfing Clusters</div>
                   <div className="text-[10px] text-[#64748B]">Fan-in / Fan-out aggregators</div>
                 </div>
               </div>
-              <span className="text-xs font-mono font-medium text-[#0F172A] px-2 py-0.5 rounded-[3px] bg-white border border-[#E2E8F0]">
+              <span className="text-xs font-mono font-medium text-[#172033] px-2 py-0.5 rounded-[3px] bg-white border border-[#DCE1E7]">
                 {typologies.smurfing}
               </span>
             </div>
 
-            <div className="flex items-center justify-between p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#E2E8F0]">
+            <div className="flex items-center justify-between p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#DCE1E7]">
               <div className="flex items-center gap-2">
                 <Layers size={13} className="text-[#64748B]" />
                 <div>
-                  <div className="text-xs font-medium text-[#0F172A]">Layered Shell Chains</div>
+                  <div className="text-xs font-medium text-[#172033]">Layered Shell Chains</div>
                   <div className="text-[10px] text-[#64748B]">Rapid forwarding conduits</div>
                 </div>
               </div>
-              <span className="text-xs font-mono font-medium text-[#0F172A] px-2 py-0.5 rounded-[3px] bg-white border border-[#E2E8F0]">
+              <span className="text-xs font-mono font-medium text-[#172033] px-2 py-0.5 rounded-[3px] bg-white border border-[#DCE1E7]">
                 {typologies.shell}
               </span>
             </div>
@@ -399,11 +351,11 @@ export default function NetworkOverview({
         </div>
 
         {/* Priority Flagged Accounts */}
-        <div className="lg:col-span-2 bg-white border border-[#E2E8F0] rounded-[4px] p-4 space-y-3 shadow-2xs">
-          <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-2.5">
+        <div className="lg:col-span-2 bg-white border border-[#DCE1E7] rounded-[4px] p-4 space-y-3 shadow-2xs">
+          <div className="flex items-center justify-between border-b border-[#DCE1E7] pb-2.5">
             <div>
               <div className="text-[10px] font-mono text-[#64748B] uppercase tracking-wider">Entity Triage</div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#0F172A]">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#172033]">
                 High-Risk Flagged Accounts
               </h3>
             </div>
@@ -424,11 +376,11 @@ export default function NetworkOverview({
                   onSelectAccount?.(acc.account_id);
                   onNavigateTab("investigate");
                 }}
-                className="p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#CBD5E1] hover:bg-[#F1F5F9] transition cursor-pointer flex items-center justify-between group"
+                className="p-2.5 rounded-[4px] bg-[#F8FAFC] border border-[#DCE1E7] hover:border-[#CBD5E1] hover:bg-[#F1F5F9] transition cursor-pointer flex items-center justify-between group"
               >
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-semibold text-[#0F172A] group-hover:underline">
+                    <span className="text-xs font-mono font-semibold text-[#172033] group-hover:underline">
                       {acc.account_id}
                     </span>
                     <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[3px] bg-red-50 border border-red-200 text-red-700 font-semibold">
@@ -441,7 +393,7 @@ export default function NetworkOverview({
                 </div>
 
                 <div className="text-right">
-                  <div className="text-xs font-mono font-semibold text-[#0F172A]">
+                  <div className="text-xs font-mono font-semibold text-[#172033]">
                     {formatCompactVolume(acc.total_turnover || acc.total_received)}
                   </div>
                   <span className="text-[10px] text-[#2563EB] group-hover:text-[#1D4ED8] inline-flex items-center gap-1 font-medium">

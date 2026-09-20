@@ -422,7 +422,7 @@ export default function RingInvestigation({
                   Case File Generation
                 </h3>
               </div>
-              <span className="text-[10px] font-mono text-[#64748B]">SAR COMPLIANT</span>
+              <span className="text-[10px] font-mono text-[#64748B]">SAR-READY FORMAT</span>
             </div>
 
             <p className="text-xs text-[#475569] leading-relaxed">

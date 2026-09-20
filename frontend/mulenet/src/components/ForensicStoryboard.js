@@ -34,7 +34,7 @@ export default function ForensicStoryboard({
     const pattern = ring.primary_pattern || "";
     let schemeType = "Coordinated Laundering Network";
     let explanation = ring.description;
-    let recommendation = "File Suspicious Activity Report (SAR) with FinCEN and freeze member accounts.";
+    let recommendation = "Suggested action: Evaluate for potential SAR filing and review conduit accounts.";
     let flowSteps = [];
 
     if (pattern.includes("Cycle") || pattern.includes("Circular")) {
@@ -43,7 +43,7 @@ export default function ForensicStoryboard({
       explanation = `A coordinated ring of ${count} accounts routed $${Number(
         ring.total_funds_routed
       ).toLocaleString()} sequentially in a closed circuit, returning 100% of capital to the originator to fabricate turnover.`;
-      recommendation = `RECOMMENDED ACTION: Issue immediate freeze order across all ${count} accounts; submit SAR for synthetic turnover fabrication.`;
+      recommendation = `SUGGESTED ACTION: Evaluate accounts for potential SAR filing regarding circular turnover; review conduit activity.`;
 
       if (ring.member_accounts && ring.member_accounts.length > 0) {
         flowSteps = ring.member_accounts.map((acc, idx) => ({
@@ -62,7 +62,7 @@ export default function ForensicStoryboard({
 
       schemeType = "Layered Multi-Hop Shell Pipeline";
       explanation = `Capital from ${origin} was funneled through ${intermediaryCount} intermediary conduit account(s) before settling at ${dest} (${ring.total_funds_routed > 0 ? (isINR ? '₹' : '$') + Number(ring.total_funds_routed).toLocaleString() : 'high velocity'}).`;
-      recommendation = `RECOMMENDED ACTION: Trace ultimate beneficial ownership (UBO) of intermediary entities; request inter-institution freeze.`;
+      recommendation = `SUGGESTED ACTION: Trace ultimate beneficial ownership (UBO) of intermediary entities; evaluate provisional debit-review.`;
 
       if (members.length > 1) {
         flowSteps = members.slice(0, members.length - 1).map((acc, idx) => ({
@@ -80,7 +80,7 @@ export default function ForensicStoryboard({
 
       schemeType = "Structuring & Smurfing Aggregator Hub";
       explanation = `${muleCount} feeder entity accounts coordinated structured transfers totaling ${isINR ? '₹' : '$'}${Number(ring.total_funds_routed || 0).toLocaleString()} into central aggregator hub ${hub}.`;
-      recommendation = `RECOMMENDED ACTION: File Regulatory SAR for structured smurfing; flag aggregator account for immediate review.`;
+      recommendation = `SUGGESTED ACTION: Review structured fund flows for potential regulatory SAR; flag aggregator account for priority compliance triage.`;
 
       flowSteps = mules.slice(0, 8).map((mule) => ({
         account: mule,

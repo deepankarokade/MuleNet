@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
-      <body suppressHydrationWarning className="min-h-full flex flex-col bg-[#F1F3F5] text-[#0F172A] font-sans">
+      <body suppressHydrationWarning className="min-h-full flex flex-col bg-[#F4F6F8] text-[#172033] font-sans">
         <ForensicsProvider>
           <WorkstationShell>
             {children}

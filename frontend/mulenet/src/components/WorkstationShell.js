@@ -48,7 +48,7 @@ export default function WorkstationShell({ children }) {
 
   // Determine active module from current URL pathname
   const activeTab = useMemo(() => {
-    if (!pathname || pathname === "/" || pathname === "/overview") return "overview";
+    if (!pathname || pathname === "/workstation" || pathname === "/overview") return "overview";
     if (pathname.startsWith("/investigate")) return "investigate";
     if (pathname.startsWith("/networks")) return "ring_investigation";
     if (pathname.startsWith("/graph")) return "graph";
@@ -59,7 +59,7 @@ export default function WorkstationShell({ children }) {
   const handleSelectTab = (tabId) => {
     switch (tabId) {
       case "overview":
-        router.push("/overview");
+        router.push("/workstation");
         break;
       case "investigate":
         router.push("/investigate");
@@ -74,7 +74,7 @@ export default function WorkstationShell({ children }) {
         router.push("/accounts");
         break;
       default:
-        router.push("/overview");
+        router.push("/workstation");
     }
   };
 
@@ -87,8 +87,30 @@ export default function WorkstationShell({ children }) {
 
   const curr = isINR ? "₹" : "$";
 
+  // Calculate total network volume analyzed across all transactions
+  const totalVolumeAnalyzed = useMemo(() => {
+    if (parsedTransactions && parsedTransactions.length > 0) {
+      return parsedTransactions.reduce((sum, tx) => sum + (Number(tx.amount) || 0), 0);
+    }
+    return (report?.summary?.total_suspicious_volume || 0) * 8.5;
+  }, [parsedTransactions, report]);
+
+  const formatCompactVolume = (val) => {
+    if (!val || isNaN(val)) return `${curr}0`;
+    if (val >= 10000000) return `${curr}${(val / 10000000).toFixed(2)} Cr`;
+    if (val >= 1000000) return `${curr}${(val / 1000000).toFixed(1)}M`;
+    if (val >= 100000) return `${curr}${(val / 100000).toFixed(1)}L`;
+    if (val >= 1000) return `${curr}${(val / 1000).toFixed(0)}K`;
+    return `${curr}${Math.round(val).toLocaleString()}`;
+  };
+
+  // If on the public landing page (/), render without workstation shell chrome
+  if (pathname === "/") {
+    return <>{children}</>;
+  }
+
   return (
-    <div className="min-h-screen bg-[#F1F3F5] text-[#0F172A] flex flex-col font-sans">
+    <div className="min-h-screen bg-[#F4F6F8] text-[#172033] flex flex-col font-sans">
       <Header
         onLoadDemoData={handleLoadDemo}
         isAnalyzing={isAnalyzing}
@@ -197,18 +219,18 @@ export default function WorkstationShell({ children }) {
 
           {/* Quick Metrics Strip */}
           {report && report.summary && (
-            <section className="bg-white border border-[#E2E8F0] rounded-[4px] px-4 py-2.5 flex flex-wrap items-center justify-between gap-4 text-xs shadow-2xs">
-              <div className="flex flex-wrap items-center gap-5 sm:gap-6">
+            <section className="bg-white border border-[#DCE1E7] rounded-[4px] px-4 py-2.5 flex flex-wrap items-center justify-between gap-4 text-xs shadow-2xs">
+              <div className="flex flex-wrap items-center gap-4 sm:gap-6">
                 <div className="flex items-center gap-2">
                   <span className="text-[#64748B] uppercase tracking-wider text-[10px]">Accounts</span>
-                  <span className="font-mono font-medium text-[#0F172A]">
+                  <span className="font-mono font-medium text-[#172033]">
                     {Number(report.summary.total_accounts || 0).toLocaleString()}
                   </span>
                 </div>
                 <span className="text-[#CBD5E1]">•</span>
                 <div className="flex items-center gap-2">
                   <span className="text-[#64748B] uppercase tracking-wider text-[10px]">Transactions</span>
-                  <span className="font-mono font-medium text-[#0F172A]">
+                  <span className="font-mono font-medium text-[#172033]">
                     {Number(report.summary.total_transactions || 0).toLocaleString()}
                   </span>
                 </div>
@@ -228,14 +250,20 @@ export default function WorkstationShell({ children }) {
                     {report.fraud_rings?.length || 0}
                   </span>
                 </div>
+                <span className="text-[#CBD5E1]">•</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[#64748B] uppercase tracking-wider text-[10px]">Volume</span>
+                  <span className="font-mono font-medium text-[#172033]">
+                    {formatCompactVolume(totalVolumeAnalyzed)}
+                  </span>
+                </div>
               </div>
 
               <div className="flex items-center gap-3">
                 <div className="text-[11px] font-mono text-[#64748B]">
-                  Suspicious Volume:{" "}
+                  Suspicious Flow:{" "}
                   <span className="text-red-700 font-semibold font-mono">
-                    {curr}
-                    {Number(report.summary.total_suspicious_volume || 0).toLocaleString()}
+                    {formatCompactVolume(report.summary.total_suspicious_volume)}
                   </span>
                 </div>
               </div>
@@ -248,8 +276,8 @@ export default function WorkstationShell({ children }) {
           </section>
 
           {/* Footer */}
-          <footer className="pt-6 pb-2 text-center text-xs text-[#64748B] border-t border-[#E2E8F0]">
-            <p>MuleNet Financial Intelligence Platform • Compliant with AML / CFT Guidelines</p>
+          <footer className="pt-6 pb-2 text-center text-xs text-[#64748B] border-t border-[#DCE1E7]">
+            <p>MuleNet Financial Intelligence Workstation • Institutional AML Forensics</p>
           </footer>
         </main>
       </div>

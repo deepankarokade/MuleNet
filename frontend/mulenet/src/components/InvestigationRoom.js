@@ -625,9 +625,14 @@ export default function InvestigationRoom({
             <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-3">
               <div className="flex items-center gap-2">
                 <FileCheck className="text-[#2563EB] w-4 h-4" />
-                <h3 className="text-sm font-semibold text-[#0F172A]">
-                  Suspicious Activity Report (SAR) Case File
-                </h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-semibold text-[#172033]">
+                    Investigation Report & Forensic Dossier
+                  </h3>
+                  <span className="text-[10px] font-mono text-[#64748B] px-1.5 py-0.5 rounded-[3px] bg-[#F8FAFC] border border-[#DCE1E7]">
+                    SAR-ready format
+                  </span>
+                </div>
               </div>
 
               <button
