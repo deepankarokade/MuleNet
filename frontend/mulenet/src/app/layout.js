@@ -22,9 +22,10 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#F1F3F5] text-[#0F172A] font-sans">
+      <body suppressHydrationWarning className="min-h-full flex flex-col bg-[#F1F3F5] text-[#0F172A] font-sans">
         {children}
       </body>
     </html>

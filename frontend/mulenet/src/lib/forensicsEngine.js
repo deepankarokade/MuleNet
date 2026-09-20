@@ -57,10 +57,14 @@ export function parseCSV(csvText) {
   }
 
   const required = ["sender_account", "receiver_account", "amount", "timestamp"];
-  for (const req of required) {
-    if (headerMap[req] === undefined) {
-      throw new Error(`Missing required CSV column for '${req}'. Found: ${rawHeaders.join(", ")}`);
-    }
+  const missing = required.filter((req) => headerMap[req] === undefined);
+  if (missing.length > 0) {
+    const previewCols = rawHeaders.slice(0, 6).join(", ") + (rawHeaders.length > 6 ? "..." : "");
+    throw new Error(
+      `Incompatible dataset schema: Missing required financial column(s) [${missing.join(", ")}]. ` +
+      `Detected columns: [${previewCols}]. ` +
+      `MuleNet requires banking transaction logs with sender account, receiver account, amount, and timestamp.`
+    );
   }
 
   const transactions = [];

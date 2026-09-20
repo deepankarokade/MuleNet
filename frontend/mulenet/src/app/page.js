@@ -79,8 +79,9 @@ export default function Home() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!file.name.endsWith(".csv") && !file.name.endsWith(".txt")) {
-      setErrorMsg("Please upload a valid .csv or .txt file.");
+    const ext = file.name.toLowerCase();
+    if (!ext.endsWith(".csv") && !ext.endsWith(".txt")) {
+      setErrorMsg(`Unsupported file format "${file.name}". MuleNet accepts .csv or .txt files containing banking transaction logs.`);
       return;
     }
 
@@ -98,7 +99,7 @@ export default function Home() {
 
   const handleAnalyzeData = async (rawCsv, name = "uploaded_transactions.csv") => {
     if (!rawCsv || !rawCsv.trim()) {
-      setErrorMsg("CSV content is empty.");
+      setErrorMsg("Uploaded file is empty. Please provide a CSV file with transaction records.");
       return;
     }
 
@@ -108,14 +109,6 @@ export default function Home() {
     setAnalysisStep("Validating transaction records...");
 
     try {
-      // Parse transactions for client-side queries and fallback
-      try {
-        const txs = parseCSV(rawCsv);
-        setParsedTransactions(txs);
-      } catch (parseErr) {
-        console.warn("CSV parsing note:", parseErr);
-      }
-
       // 1. Try hitting the running FastAPI backend first
       let backendSuccess = false;
       try {
@@ -134,8 +127,16 @@ export default function Home() {
           const data = await res.json();
           setReport(data);
           backendSuccess = true;
+        } else {
+          const errData = await res.json().catch(() => null);
+          const detail = errData?.detail || `API error (${res.status}): Incompatible dataset.`;
+          throw new Error(detail);
         }
       } catch (beErr) {
+        // If it's a backend validation error (HTTP 400), surface it directly without falling back
+        if (beErr.message && !beErr.message.includes("Failed to fetch") && !beErr.message.includes("NetworkError")) {
+          throw beErr;
+        }
         backendSuccess = false;
       }
 
@@ -151,6 +152,13 @@ export default function Home() {
 
         const forensicsReport = runInBrowserForensics(parsedTxs);
         setReport(forensicsReport);
+      } else {
+        try {
+          const parsedTxs = parseCSV(rawCsv);
+          setParsedTransactions(parsedTxs);
+        } catch (pErr) {
+          console.warn("Client CSV indexing note:", pErr);
+        }
       }
 
       setAnalysisStep("Analysis complete.");

@@ -97,9 +97,14 @@ def resolve_header_mapping(headers: List[str]) -> Dict[str, str]:
                 break
         if not found:
             if canon_name in REQUIRED_COLUMNS:
+                detected_cols = ", ".join(f"'{h}'" for h in headers[:6])
+                if len(headers) > 6:
+                    detected_cols += f", ... ({len(headers) - 6} more)"
                 raise ValueError(
-                    f"Missing required CSV column for '{canon_name}'. "
-                    f"Accepted header names include: {', '.join(aliases)}"
+                    f"Incompatible dataset schema: Missing required CSV column for '{canon_name}'. "
+                    f"MuleNet expects financial transaction records with sender, receiver, amount, and timestamp. "
+                    f"Detected columns in file: [{detected_cols}]. "
+                    f"Accepted header aliases for '{canon_name}': {', '.join(aliases[:5])}."
                 )
         else:
             mapping[canon_name] = found

@@ -533,6 +533,8 @@ export default function CytoscapeGraph({
     cy.fit(undefined, 30);
   };
 
+  const handleClearTrace = handleResetTrace;
+
   const activeRingInfo = fraudRings.find((r) => r.ring_id === activeRingFilter);
 
   // Compute sequential hops for active ring replay
